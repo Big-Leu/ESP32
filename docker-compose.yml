@@ -1,0 +1,67 @@
+services:
+  api: &main_app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: Backend:${BACKEND_VERSION:-latest}
+    restart: always
+    env_file:
+      - path: .env
+        required: false
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
+    environment:
+      BACKEND_HOST: 0.0.0.0
+      BACKEND_DB_HOST: Backend-db
+      BACKEND_DB_PORT: 5432
+      BACKEND_DB_USER: Backend
+      BACKEND_DB_PASS: Backend
+      BACKEND_DB_BASE: Backend
+      BACKEND_REDIS_HOST: Backend-redis
+
+  db:
+    image: postgres:18.1-bookworm
+    hostname: Backend-db
+    environment:
+      POSTGRES_PASSWORD: "Backend"
+      POSTGRES_USER: "Backend"
+      POSTGRES_DB: "Backend"
+    volumes:
+      - Backend-db-data:/var/lib/postgresql
+    restart: always
+    healthcheck:
+      test: pg_isready -U Backend
+      interval: 2s
+      timeout: 3s
+      retries: 40
+
+  migrator:
+    <<: *main_app
+    restart: "no"
+    command: alembic upgrade head
+    depends_on:
+      db:
+        condition: service_healthy
+
+  redis:
+    image: redis:8.4.0
+    hostname: "Backend-redis"
+    restart: always
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    healthcheck:
+      test: redis-cli ping
+      interval: 1s
+      timeout: 3s
+      retries: 50
+
+
+
+volumes:
+  Backend-db-data:
+    name: Backend-db-data

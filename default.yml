@@ -1,0 +1,30 @@
+BACKEND_RELOAD: True
+BACKEND_HOST: localhost
+BACKEND_PORT: 8000
+
+BACKEND_DB_HOST: localhost
+BACKEND_DB_PORT: 5432
+BACKEND_DB_USER: Backend
+BACKEND_DB_PASS: Backend
+BACKEND_DB_BASE: admin
+BACKEND_DB_ECHO: False
+
+
+USERS_SECRET: ""
+
+
+# Alert Configuration
+SUSTAIN_SECONDS: 10
+
+# Twilio SMS Configuration (Optional)
+# Get credentials from https://www.twilio.com/console
+TWILIO_SID: 
+TWILIO_TOKEN: 
+TWILIO_PHONE: 
+ALERT_PHONE: 
+
+# SendGrid Email Configuration (Optional)
+# Get API key from https://app.sendgrid.com/settings/api_keys
+SENDGRID_API_KEY: 
+FROM_EMAIL: 
+ALERT_EMAIL: 
