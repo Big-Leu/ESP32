@@ -103,9 +103,6 @@ class ServiceNowService:
                 f"(Room {ticket_data.room_number})"
             ),
             "description": ticket_data.description,
-            "assignment_group": assigned_group,
-            "impact": priority_settings.impact,
-            "urgency": priority_settings.urgency,
         }
 
         # Create ticket via API
