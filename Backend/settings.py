@@ -96,6 +96,21 @@ class Settings(BaseSettings):
     sendgrid_api_key: str | None = cfg.get("SENDGRID_API_KEY")
     from_email: str | None = cfg.get("FROM_EMAIL")
     alert_email: str | None = cfg.get("ALERT_EMAIL")
+
+    # ServiceNow configuration
+    servicenow_instance_url: str = cfg.get(
+        "SERVICENOW_INSTANCE_URL"
+    )
+    servicenow_table_name: str = cfg.get(
+        "SERVICENOW_TABLE_NAME"
+    )
+    servicenow_username: str = cfg.get(
+        "SERVICENOW_USERNAME"
+    )
+    servicenow_password: str = cfg.get(
+        "SERVICENOW_PASSWORD"
+    )
+
     @property
     def db_url(self) -> URL:
         """
